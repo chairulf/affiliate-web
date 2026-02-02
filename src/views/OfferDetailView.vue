@@ -24,22 +24,37 @@ const goBack = () => {
   router.push({ name: 'home' })
 }
 
-const cashbackRate = computed(() => {
-  const rates: Record<string, string> = {
-    'Marketplace': 's/d 2,6%',
-    'Fashion': 's/d 3,5%',
-    'Electronics': 's/d 2,8%',
-    'Travel': 's/d 4,2%',
-  }
-  return rates[offer.value?.categories || ''] || 's/d 2,5%'
-})
+
 
 const estimatedDays = computed(() => {
   if (!offer.value) return 0
   return Math.ceil((offer.value.validationTerms + offer.value.paymentTerms) / 2)
 })
 
-git
+const handleGenerateDeeplink = async () => {
+  if (!offer.value) return
+
+  isGeneratingLink.value = true
+  try {
+    const userId = localStorage.getItem('user_id') || 'abcd'
+    
+    const response = await deeplinkStore.generateDeeplink(
+      offer.value.offerId,
+      offer.value.previewUrl,
+      userId
+    )
+
+    if (response.deeplink) {
+      window.open(response.deeplink, '_blank')
+    }
+  } catch (error) {
+    console.error('Failed to generate deeplink:', error)
+    alert('Gagal membuat link. Silakan coba lagi.')
+  } finally {
+    isGeneratingLink.value = false
+  }
+}
+
 </script>
 
 <template>
@@ -61,28 +76,25 @@ git
     </div>
 
     <div class="content-section">
+      <div class="description-section">
+        <h2>Deskripsi</h2>
+        <p>{{ offer.description }}</p>
+      </div>
+
       <div class="cashback-info">
-        <h2>Cashback {{ cashbackRate }}</h2>
-        <div class="cashback-details">
-          <div class="cashback-item">
-            <p class="cashback-label">{{ offer.categories }}, Olahraga & Aktivitas Luar Ruang (maks 50rb)</p>
-            <p class="cashback-rate">2,6%</p>
+        <h2>Cashback</h2>
+        <div v-if="offer.commissions && offer.commissions.length > 0" class="cashback-details">
+          <div
+            v-for="(commission, index) in offer.commissions"
+            :key="index"
+            class="cashback-item"
+          >
+            <p class="cashback-label">{{ Object.keys(commission)[0] }}</p>
+            <p class="cashback-rate">{{ Object.values(commission)[0] }}</p>
           </div>
-          <p class="cashback-max">Maksimal Rp50.000 per barang</p>
-
-          <div class="cashback-item">
-            <p class="cashback-label">Home & Living, Kesehatan & Kecantikan (maks 50rb)</p>
-            <p class="cashback-rate">1,95%</p>
-          </div>
-          <p class="cashback-max">Maksimal Rp50.000 per barang</p>
-
-          <div class="cashback-item">
-            <p class="cashback-label">Ibu & Anak, Mainan, Buku & Stationery (maks 50rb)</p>
-            <p class="cashback-rate">1,3%</p>
-          </div>
-          <p class="cashback-max">Maksimal Rp50.000 per barang</p>
-
-          <button class="see-more-btn">Lihat 2 lainnya →</button>
+        </div>
+        <div v-else class="cashback-details">
+          <p class="no-commission">Informasi komisi belum tersedia</p>
         </div>
       </div>
 
@@ -129,37 +141,6 @@ git
               <p class="timeline-days">{{ offer.validationTerms }} hari</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="terms-section">
-        <h2>Syarat dan pengecualian</h2>
-        <div class="terms-item" @click="showExclusions = !showExclusions">
-          <div class="terms-header">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2"/>
-            </svg>
-            <span>Pengecualian</span>
-          </div>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            :style="{ transform: showExclusions ? 'rotate(180deg)' : 'rotate(0deg)' }"
-          >
-            <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
-        </div>
-
-        <div v-if="showExclusions" class="exclusions-content">
-          <p><strong>Kamu tidak akan</strong> mendapat Cashback pada:</p>
-          <ul>
-            <li>Utilities; Mobil Bahan Bakar Bensin; Mobil Listrik;</li>
-            <li>Mobil Bekas; Mobil Baru; Rokok Filter; Rokok Kretek;</li>
-            <li>Logam Mulia & Perhiasan; Investasi; Donasi; Rokok</li>
-            <li>dan Korek; Media Digital; Mobil</li>
-          </ul>
         </div>
       </div>
     </div>
@@ -280,6 +261,29 @@ git
   padding: 0 1rem;
 }
 
+.description-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.description-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #1a1a2e;
+}
+
+.description-section p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  white-space: pre-line;
+}
+
 .cashback-info {
   background: white;
   border-radius: 16px;
@@ -323,20 +327,12 @@ git
   white-space: nowrap;
 }
 
-.cashback-max {
-  font-size: 0.85rem;
+.no-commission {
+  text-align: center;
   color: #666;
-  margin: -0.5rem 0 0.5rem 0;
-}
-
-.see-more-btn {
-  background: transparent;
-  border: none;
-  color: #667eea;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.5rem 0;
-  text-align: left;
+  font-size: 0.95rem;
+  padding: 1rem 0;
+  margin: 0;
 }
 
 .info-box {

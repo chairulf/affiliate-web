@@ -20,6 +20,7 @@ export class OfferMapper {
       paymentTerms: dto.payment_terms,
       trackingLink: dto.tracking_link,
       lastSyncedAt: dto.last_synced_at,
+      commissions: dto.commissions,
     }
   }
 
@@ -39,6 +40,7 @@ export class OfferMapper {
       offer_status: domain.offerStatus,
       validation_terms: domain.validationTerms,
       payment_terms: domain.paymentTerms,
+      commissions: domain.commissions,
       tracking_link: domain.trackingLink,
       last_synced_at: domain.lastSyncedAt,
     }

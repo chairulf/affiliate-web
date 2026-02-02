@@ -1,3 +1,7 @@
+export interface Commission {
+  [key: string]: string
+}
+
 export interface Offer {
   offerId: number
   merchantId: number
@@ -15,4 +19,5 @@ export interface Offer {
   paymentTerms: number
   trackingLink: string
   lastSyncedAt: string
+  commissions: Commission[] | null
 }

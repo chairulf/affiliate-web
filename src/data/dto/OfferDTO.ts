@@ -1,3 +1,7 @@
+export interface CommissionDTO {
+  [key: string]: string
+}
+
 export interface OfferDTO {
   offer_id: number
   merchant_id: number
@@ -13,6 +17,7 @@ export interface OfferDTO {
   offer_status: string
   validation_terms: number
   payment_terms: number
+  commissions: CommissionDTO[] | null
   tracking_link: string
   last_synced_at: string
 }

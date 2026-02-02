@@ -1,15 +1,28 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useOfferStore } from '@/stores/offerStore'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import BannerCarousel from '@/components/BannerCarousel.vue'
 import CategoryFilter from '@/components/CategoryFilter.vue'
 
 const offerStore = useOfferStore()
 const router = useRouter()
+const route = useRoute()
 const selectedCategory = ref<string>('All')
+const userId = ref<string>('')
 
 onMounted(() => {
+  const userIdParam = route.query.user_id as string
+  if (userIdParam) {
+    userId.value = userIdParam
+    localStorage.setItem('user_id', userIdParam)
+  } else {
+    const storedUserId = localStorage.getItem('user_id')
+    if (storedUserId) {
+      userId.value = storedUserId
+    }
+  }
+  
   offerStore.fetchOffers(1)
 })
 

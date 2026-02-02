@@ -37,18 +37,26 @@ const selectCategory = (category: string) => {
 
 const getCategoryIcon = (category: string) => {
   const iconMap: Record<string, string> = {
-    'All': '🏠',
+    'All': '🌟',
+    'Marketplace': '🛒',
     'Fashion': '👗',
-    'Electronics': '💻',
-    'Food': '🍔',
+    'Electronics': '📱',
     'Travel': '✈️',
-    'Beauty': '💄',
-    'Sports': '⚽',
-    'Books': '📚',
-    'Home': '🏡',
-    'Toys': '🎮',
-    'Health': '💊',
-    'Automotive': '🚗'
+    'Health & Beauty': '💄',
+    'Digital Services': '💻',
+    'Education': '📚',
+    'Food & Beverage': '🍔',
+    'Home & Living': '🏡',
+    'Sports & Outdoors': '⚽',
+    'Automotive': '🚗',
+    'Books & Stationery': '📖',
+    'Toys & Games': '🎮',
+    'Pet Supplies': '🐾',
+    'Baby & Kids': '👶',
+    'Jewelry & Accessories': '💍',
+    'Office Supplies': '📋',
+    'Gaming': '🎯',
+    'Music & Entertainment': '🎵'
   }
   return iconMap[category] || '🏷️'
 }
