@@ -37,7 +37,7 @@ const handleGenerateDeeplink = async () => {
   isGeneratingLink.value = true
   try {
     const userId = localStorage.getItem('user_id') || 'abcd'
-    
+
     const response = await deeplinkStore.generateDeeplink(
       offer.value.offerId,
       offer.value.previewUrl,
@@ -49,7 +49,7 @@ const handleGenerateDeeplink = async () => {
     }
   } catch (error) {
     console.error('Failed to generate deeplink:', error)
-    alert('Gagal membuat link. Silakan coba lagi.')
+    alert('Failed to generate link. Please try again.')
   } finally {
     isGeneratingLink.value = false
   }
@@ -77,12 +77,12 @@ const handleGenerateDeeplink = async () => {
 
     <div class="content-section">
       <div class="description-section">
-        <h2>Deskripsi</h2>
+        <h2>Description</h2>
         <p>{{ offer.description }}</p>
       </div>
 
       <div class="cashback-info">
-        <h2>Cashback</h2>
+        <h2>Commission</h2>
         <div v-if="offer.commissions && offer.commissions.length > 0" class="cashback-details">
           <div
             v-for="(commission, index) in offer.commissions"
@@ -92,18 +92,22 @@ const handleGenerateDeeplink = async () => {
             <p class="cashback-label">{{ Object.keys(commission)[0] }}</p>
             <p class="cashback-rate">{{ Object.values(commission)[0] }}</p>
           </div>
+          <div v-if="offer.commissionCapped" class="commission-capped">
+            <p class="capped-label">Commission Capped:</p>
+            <p class="capped-value">{{ offer.commissionCapped }}</p>
+          </div>
         </div>
         <div v-else class="cashback-details">
-          <p class="no-commission">Informasi komisi belum tersedia</p>
+          <p class="no-commission">Commission information not available</p>
         </div>
       </div>
 
       <div class="info-box">
-        <p>💰 Cashback akan diperbaiki setelah masa validasi</p>
+        <p>💰 Commission will be confirmed after validation period</p>
       </div>
 
       <div class="timeline-section">
-        <h2>Perkiraan waktu Cashback</h2>
+        <h2>Estimated Commission Timeline</h2>
         <div class="timeline">
           <div class="timeline-item">
             <div class="timeline-icon-wrapper">
@@ -113,7 +117,7 @@ const handleGenerateDeeplink = async () => {
               <div class="timeline-line"></div>
             </div>
             <div class="timeline-content">
-              <h3>Pembelian</h3>
+              <h3>Purchase</h3>
             </div>
           </div>
 
@@ -125,8 +129,8 @@ const handleGenerateDeeplink = async () => {
               <div class="timeline-line"></div>
             </div>
             <div class="timeline-content">
-              <h3>Dilacak dalam</h3>
-              <p class="timeline-days">{{ estimatedDays }} hari</p>
+              <h3>Tracked within</h3>
+              <p class="timeline-days">{{ estimatedDays }} days</p>
             </div>
           </div>
 
@@ -137,8 +141,8 @@ const handleGenerateDeeplink = async () => {
               </div>
             </div>
             <div class="timeline-content">
-              <h3>Terkonfirmasi dalam</h3>
-              <p class="timeline-days">{{ offer.validationTerms }} hari</p>
+              <h3>Confirmed within</h3>
+              <p class="timeline-days">{{ offer.validationTerms }} days</p>
             </div>
           </div>
         </div>
@@ -151,7 +155,7 @@ const handleGenerateDeeplink = async () => {
         @click="handleGenerateDeeplink"
         :disabled="isGeneratingLink"
       >
-        {{ isGeneratingLink ? 'Menghasilkan link...' : 'Diingat ya' }}
+        {{ isGeneratingLink ? 'Shop Now...' : 'Shop Now' }}
       </button>
     </div>
   </div>
@@ -333,6 +337,32 @@ const handleGenerateDeeplink = async () => {
   font-size: 0.95rem;
   padding: 1rem 0;
   margin: 0;
+}
+
+.commission-capped {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.capped-label {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+  font-weight: 600;
+}
+
+.capped-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #ff6b35;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .info-box {

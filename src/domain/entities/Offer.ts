@@ -20,4 +20,5 @@ export interface Offer {
   trackingLink: string
   lastSyncedAt: string
   commissions: Commission[] | null
+  commissionCapped: string
 }

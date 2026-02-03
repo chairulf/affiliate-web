@@ -50,8 +50,8 @@ const goToOfferDetail = (offerId: number) => {
 <template>
   <div class="home-container">
     <div class="hero-header">
-      <h1 class="main-title">Temukan Cashback Terbaik</h1>
-      <p class="subtitle">Belanja hemat dengan penawaran affiliate pilihan</p>
+      <h1 class="main-title">Find Best Commission Offers</h1>
+      <p class="subtitle">Shop smart with curated affiliate deals</p>
     </div>
 
     <main class="main-content">
@@ -69,16 +69,16 @@ const goToOfferDetail = (offerId: number) => {
 
       <div v-else-if="filteredOffers.length === 0" class="no-results">
         <div class="no-results-icon">🔍</div>
-        <h3>Tidak ada penawaran ditemukan</h3>
-        <p>Coba pilih kategori lain</p>
+        <h3>No offers found</h3>
+        <p>Try selecting another category</p>
       </div>
 
       <div v-else class="offers-section">
         <div class="section-header">
           <h2 class="section-title">
-            {{ selectedCategory === 'All' ? 'Semua Penawaran' : selectedCategory }}
+            {{ selectedCategory === 'All' ? 'All Offers' : selectedCategory }}
           </h2>
-          <span class="offer-count">{{ filteredOffers.length }} penawaran</span>
+          <span class="offer-count">{{ filteredOffers.length }} offers</span>
         </div>
 
         <div class="offers-grid">

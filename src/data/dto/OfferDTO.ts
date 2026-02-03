@@ -18,6 +18,7 @@ export interface OfferDTO {
   validation_terms: number
   payment_terms: number
   commissions: CommissionDTO[] | null
+  commission_capped: string
   tracking_link: string
   last_synced_at: string
 }
