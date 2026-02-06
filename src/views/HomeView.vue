@@ -22,7 +22,7 @@ onMounted(() => {
       userId.value = storedUserId
     }
   }
-  
+
   offerStore.fetchOffers(1)
 })
 
@@ -30,7 +30,7 @@ const filteredOffers = computed(() => {
   if (selectedCategory.value === 'All') {
     return offerStore.offers
   }
-  
+
   return offerStore.offers.filter(offer => {
     if (!offer.categories) return false
     const categories = offer.categories.split(',').map(c => c.trim())
@@ -50,14 +50,14 @@ const goToOfferDetail = (offerId: number) => {
 <template>
   <div class="home-container">
     <div class="hero-header">
-      <h1 class="main-title">Find Best Commission Offers</h1>
-      <p class="subtitle">Shop smart with curated affiliate deals</p>
+      <h1 class="main-title">Smart Shopping Starts Here</h1>
+      <p class="subtitle">Discover trusted deals and promotions</p>
     </div>
 
     <main class="main-content">
       <BannerCarousel />
 
-      <CategoryFilter 
+      <CategoryFilter
         v-if="!offerStore.loading && offerStore.offers.length > 0"
         :offers="offerStore.offers"
         @filter-change="handleCategoryChange"
@@ -82,8 +82,8 @@ const goToOfferDetail = (offerId: number) => {
         </div>
 
         <div class="offers-grid">
-          <div 
-            v-for="offer in filteredOffers" 
+          <div
+            v-for="offer in filteredOffers"
             :key="offer.offerId"
             class="offer-card"
             @click="goToOfferDetail(offer.offerId)"
@@ -282,20 +282,20 @@ const goToOfferDetail = (offerId: number) => {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1.25rem;
   }
-  
+
   .offer-card {
     padding: 1.75rem 1.25rem;
   }
-  
+
   .offer-logo {
     width: 90px;
     height: 90px;
   }
-  
+
   .offer-info h3 {
     font-size: 0.95rem;
   }
-  
+
   .offer-category {
     font-size: 0.8rem;
   }
@@ -309,37 +309,37 @@ const goToOfferDetail = (offerId: number) => {
   .hero-header {
     padding: 3rem 2rem 2rem;
   }
-  
+
   .main-title {
     font-size: 2.25rem;
   }
-  
+
   .subtitle {
     font-size: 1.15rem;
   }
-  
+
   .main-content {
     padding: 1.5rem 2rem 4rem;
   }
-  
+
   .offers-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.5rem;
   }
-  
+
   .offer-card {
     padding: 2rem 1.5rem;
   }
-  
+
   .offer-logo {
     width: 100px;
     height: 100px;
   }
-  
+
   .offer-info h3 {
     font-size: 1rem;
   }
-  
+
   .offer-category {
     font-size: 0.85rem;
   }
@@ -358,7 +358,7 @@ const goToOfferDetail = (offerId: number) => {
   .main-title {
     font-size: 2.5rem;
   }
-  
+
   .subtitle {
     font-size: 1.2rem;
   }
