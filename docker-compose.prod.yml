@@ -19,7 +19,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.affiliate-web.rule=Host(`affiliate-web.pocketyouasia.com`)"
+      - "traefik.http.routers.affiliate-web.rule=Host(`affiliate-web.acsdev.review`)"
       - "traefik.http.routers.affiliate-web.entrypoints=websecure"
       - "traefik.http.routers.affiliate-web.tls=true"
       - "traefik.http.routers.affiliate-web.tls.certresolver=letsencrypt"
