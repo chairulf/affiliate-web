@@ -1,35 +1,27 @@
-# Multi-stage build for production-ready Vue.js application
-
-# Stage 1: Build stage
-FROM node:20-alpine AS builder
-
-# Set working directory
+# Stage 1: Build
+FROM oven/bun:1 AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package.json bun.lock* package-lock.json* yarn.lock* pnpm-lock.yaml* ./
+COPY package.json bun.lock ./
 
 # Install dependencies
-RUN npm ci --only=production=false
+RUN bun install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build
+RUN bun run build-only
 
-# Stage 2: Production stage with Nginx
-FROM nginx:alpine AS production
+# Stage 2: Production
+FROM oven/bun:1-alpine
+WORKDIR /app
 
-# Copy built assets from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./
 
-# Add healthcheck
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost:80/ || exit 1
+RUN bun add -g serve
 
-# Expose port
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+CMD ["serve", "-s", "dist", "-l", "3000"]
