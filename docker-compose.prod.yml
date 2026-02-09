@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: affiliate-web
-    ports:
-      - "8080:80"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -18,8 +16,17 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - affiliate-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.affiliate-web.rule=Host(`affiliate-web.pocketyouasia.com`)"
+      - "traefik.http.routers.affiliate-web.entrypoints=websecure"
+      - "traefik.http.routers.affiliate-web.tls=true"
+      - "traefik.http.routers.affiliate-web.tls.certresolver=letsencrypt"
+      - "traefik.http.services.affiliate-web.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.affiliate-web.middlewares=redirect-to-https"
 
 networks:
-  affiliate-network:
-    driver: bridge
+  proxy:
+    external: true
