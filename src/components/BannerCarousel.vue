@@ -42,6 +42,9 @@ const banners = ref<Banner[]>([
 
 const currentIndex = ref(0)
 let autoPlayInterval: number | null = null
+const touchStartX = ref(0)
+const touchEndX = ref(0)
+const isDragging = ref(false)
 
 const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % banners.value.length
@@ -68,6 +71,71 @@ const stopAutoPlay = () => {
   }
 }
 
+const handleTouchStart = (e: TouchEvent) => {
+  touchStartX.value = e.touches[0].clientX
+  isDragging.value = true
+  stopAutoPlay()
+}
+
+const handleTouchMove = (e: TouchEvent) => {
+  if (!isDragging.value) return
+  touchEndX.value = e.touches[0].clientX
+}
+
+const handleTouchEnd = () => {
+  if (!isDragging.value) return
+  isDragging.value = false
+  
+  const swipeThreshold = 50
+  const diff = touchStartX.value - touchEndX.value
+  
+  if (Math.abs(diff) > swipeThreshold) {
+    if (diff > 0) {
+      nextSlide()
+    } else {
+      prevSlide()
+    }
+  }
+  
+  startAutoPlay()
+}
+
+const handleMouseDown = (e: MouseEvent) => {
+  touchStartX.value = e.clientX
+  isDragging.value = true
+  stopAutoPlay()
+}
+
+const handleMouseMove = (e: MouseEvent) => {
+  if (!isDragging.value) return
+  touchEndX.value = e.clientX
+}
+
+const handleMouseUp = () => {
+  if (!isDragging.value) return
+  isDragging.value = false
+  
+  const swipeThreshold = 50
+  const diff = touchStartX.value - touchEndX.value
+  
+  if (Math.abs(diff) > swipeThreshold) {
+    if (diff > 0) {
+      nextSlide()
+    } else {
+      prevSlide()
+    }
+  }
+  
+  startAutoPlay()
+}
+
+const handleMouseLeave = () => {
+  if (isDragging.value) {
+    isDragging.value = false
+    startAutoPlay()
+  }
+}
+
 onMounted(() => {
   startAutoPlay()
 })
@@ -78,7 +146,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="carousel-container" @mouseenter="stopAutoPlay" @mouseleave="startAutoPlay">
+  <div 
+    class="carousel-container" 
+    @mouseenter="stopAutoPlay" 
+    @mouseleave="handleMouseLeave"
+    @touchstart="handleTouchStart"
+    @touchmove="handleTouchMove"
+    @touchend="handleTouchEnd"
+    @mousedown="handleMouseDown"
+    @mousemove="handleMouseMove"
+    @mouseup="handleMouseUp"
+  >
     <div class="carousel-wrapper">
       <div 
         class="carousel-track" 
@@ -136,6 +214,12 @@ onUnmounted(() => {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel-container:active {
+  cursor: grabbing;
 }
 
 .carousel-wrapper {

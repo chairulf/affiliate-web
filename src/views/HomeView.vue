@@ -45,11 +45,24 @@ const handleCategoryChange = (category: string) => {
 const goToOfferDetail = (offerId: number) => {
   router.push({ name: 'offer-detail', params: { id: offerId } })
 }
+
+const goBack = () => {
+  if (window.PocketYouClose) {
+    window.PocketYouClose.postMessage('closing')
+  } else {
+    router.back()
+  }
+}
 </script>
 
 <template>
   <div class="home-container">
     <div class="hero-header">
+      <button class="back-btn" @click="goBack">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
       <h1 class="main-title">Smart Shopping Starts Here</h1>
       <p class="subtitle">Discover trusted deals and promotions</p>
     </div>
@@ -113,8 +126,34 @@ const goToOfferDetail = (offerId: number) => {
 
 .hero-header {
   text-align: center;
-  padding: 2rem 1.5rem 1.5rem;
+  padding: 4rem 1.5rem 1.5rem;
   color: white;
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: white;
+  border-radius: 8px;
+  transition: background 0.2s;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.back-btn:active {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .main-title {

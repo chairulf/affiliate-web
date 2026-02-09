@@ -21,7 +21,11 @@ onMounted(async () => {
 })
 
 const goBack = () => {
-  router.push({ name: 'home' })
+  if (window.PocketYouClose) {
+    window.PocketYouClose.postMessage('closing')
+  } else {
+    router.push({ name: 'home' })
+  }
 }
 
 
@@ -321,6 +325,9 @@ const handleGenerateDeeplink = async () => {
   font-size: 0.95rem;
   color: #333;
   margin: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.5;
 }
 
 .cashback-rate {
@@ -328,7 +335,8 @@ const handleGenerateDeeplink = async () => {
   font-size: 1.1rem;
   color: #1a1a2e;
   margin: 0;
-  white-space: nowrap;
+  text-align: right;
+  min-width: fit-content;
 }
 
 .no-commission {
