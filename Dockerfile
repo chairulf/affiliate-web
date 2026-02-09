@@ -9,6 +9,7 @@ COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 # Copy source code
+
 COPY . .
 
 # Build
