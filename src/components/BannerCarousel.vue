@@ -12,29 +12,29 @@ interface Banner {
 const banners = ref<Banner[]>([
   {
     id: 1,
-    title: 'Cashback hingga 50%',
-    subtitle: 'Belanja kebutuhan sehari-hari lebih hemat',
+    title: 'Up to 50% Cashback',
+    subtitle: 'Save more on your daily essentials',
     imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=400&fit=crop',
     backgroundColor: '#667eea'
   },
   {
     id: 2,
-    title: 'Promo Fashion Terbaru',
-    subtitle: 'Dapatkan diskon spesial untuk produk fashion favorit',
+    title: 'Latest Fashion Deals',
+    subtitle: 'Exclusive discounts on your favorite fashion items',
     imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=400&fit=crop',
     backgroundColor: '#764ba2'
   },
   {
     id: 3,
-    title: 'Elektronik Terbaik',
-    subtitle: 'Upgrade gadget dengan harga terjangkau',
+    title: 'Top Electronics Picks',
+    subtitle: 'Upgrade your gadgets at unbeatable prices',
     imageUrl: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=400&fit=crop',
     backgroundColor: '#f093fb'
   },
   {
     id: 4,
-    title: 'Traveling Hemat',
-    subtitle: 'Jelajahi dunia dengan penawaran travel terbaik',
+    title: 'Travel on a Budget',
+    subtitle: 'Explore the world with the best travel deals',
     imageUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=400&fit=crop',
     backgroundColor: '#4facfe'
   }
@@ -85,10 +85,10 @@ const handleTouchMove = (e: TouchEvent) => {
 const handleTouchEnd = () => {
   if (!isDragging.value) return
   isDragging.value = false
-  
+
   const swipeThreshold = 50
   const diff = touchStartX.value - touchEndX.value
-  
+
   if (Math.abs(diff) > swipeThreshold) {
     if (diff > 0) {
       nextSlide()
@@ -96,7 +96,7 @@ const handleTouchEnd = () => {
       prevSlide()
     }
   }
-  
+
   startAutoPlay()
 }
 
@@ -114,10 +114,10 @@ const handleMouseMove = (e: MouseEvent) => {
 const handleMouseUp = () => {
   if (!isDragging.value) return
   isDragging.value = false
-  
+
   const swipeThreshold = 50
   const diff = touchStartX.value - touchEndX.value
-  
+
   if (Math.abs(diff) > swipeThreshold) {
     if (diff > 0) {
       nextSlide()
@@ -125,7 +125,7 @@ const handleMouseUp = () => {
       prevSlide()
     }
   }
-  
+
   startAutoPlay()
 }
 
@@ -146,9 +146,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div 
-    class="carousel-container" 
-    @mouseenter="stopAutoPlay" 
+  <div
+    class="carousel-container"
+    @mouseenter="stopAutoPlay"
     @mouseleave="handleMouseLeave"
     @touchstart="handleTouchStart"
     @touchmove="handleTouchMove"
@@ -158,13 +158,13 @@ onUnmounted(() => {
     @mouseup="handleMouseUp"
   >
     <div class="carousel-wrapper">
-      <div 
-        class="carousel-track" 
+      <div
+        class="carousel-track"
         :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
       >
-        <div 
-          v-for="banner in banners" 
-          :key="banner.id" 
+        <div
+          v-for="banner in banners"
+          :key="banner.id"
           class="carousel-slide"
           :style="{ backgroundColor: banner.backgroundColor }"
         >

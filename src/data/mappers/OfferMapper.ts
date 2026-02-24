@@ -22,6 +22,7 @@ export class OfferMapper {
       lastSyncedAt: dto.last_synced_at,
       commissions: dto.commissions,
       commissionCapped: dto.commission_capped,
+      requiresCustomLink: dto.requires_custom_link,
     }
   }
 
@@ -45,6 +46,7 @@ export class OfferMapper {
       commission_capped: domain.commissionCapped,
       tracking_link: domain.trackingLink,
       last_synced_at: domain.lastSyncedAt,
+      requires_custom_link: domain.requiresCustomLink,
     }
   }
 }

@@ -21,4 +21,5 @@ export interface Offer {
   lastSyncedAt: string
   commissions: Commission[] | null
   commissionCapped: string
+  requiresCustomLink: boolean
 }

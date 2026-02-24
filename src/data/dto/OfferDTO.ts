@@ -21,6 +21,7 @@ export interface OfferDTO {
   commission_capped: string
   tracking_link: string
   last_synced_at: string
+  requires_custom_link: boolean
 }
 
 export interface OffersResponseDTO {
